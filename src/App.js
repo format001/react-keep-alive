@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import HomeView from './views/Home';
+import FormView from './views/Form';
 
-function App() {
+import {
+  BrowserRouter,
+  Link,
+  Routes,
+  Route
+} from 'react-router-dom';
+
+import {
+  KeepAlive,
+  keepAliveTransfer
+} from './KeepAlive';
+
+const AliveHomeView = keepAliveTransfer(HomeView, 'home');
+const AliveFormView = keepAliveTransfer(FormView, 'form');
+
+function App () {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <KeepAlive>
+        <div>
+          <ul>
+            <li>
+              <Link to={ '/' }>Home</Link>
+            </li>
+            <li>
+              <Link to={ '/form' }>Form</Link>
+            </li>
+          </ul>
+          <div>
+            <Routes>
+              <Route path="/" element={ <AliveHomeView /> } />
+              <Route path="/form" element={ <AliveFormView /> } />
+            </Routes>
+          </div>
+        </div>
+      </KeepAlive>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+
+
